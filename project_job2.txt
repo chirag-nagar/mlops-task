@@ -1,0 +1,14 @@
+if sudo cat /mlops_projectcode/*.py | grep "keras"
+then
+echo "Deep Learning Model"
+if sudo docker ps -a | grep dlos
+then
+sudo docker rm -f dlos
+sudo docker run -itd -v /mlops_projectcode/.:/code/ --name dlos centos-dl:v2
+else
+sudo docker run -itd -v /mlops_projectcode/.:/code/ --name dlos centos-dl:v2
+fi
+else
+echo "your code is different for os"
+fi
+

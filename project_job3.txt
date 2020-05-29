@@ -1,0 +1,18 @@
+sudo docker exec  dlos python3 /code/testcode.py
+sudo docker cp dlos:/code/accuracy.txt /mlops_projectcode/accuracyfile.txt
+
+model_accuracy=$(sudo cat /mlops_projectcode/accuracyfile.txt)
+epochs=1
+
+while [ $model_accuracy -lt 95 ]
+   do
+      sudo epochs=`expr $epochs + 1`
+      sudo sud_param=s/epochs=.*/epochs=${epochs}/  
+      sudo sed -i "$sed_param" /mlops_projectcode/testcode.py
+      sudo docker cp /mlops_projectcode/testcode.py dlos:/code
+      sudo docker exec dlos python3 /code/testcode.py
+      sudo docker cp dlos:/code/accuracy.txt /mlops_projectcode/accuracyfile.txt
+      model_accuracy=$(cat /mlops_projectcode/accuracyfile.txt)
+   done   
+   
+echo $(cat /mlops_projectcode/accuracyfile.txt)   
